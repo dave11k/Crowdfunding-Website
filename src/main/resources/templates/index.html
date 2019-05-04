@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<title th:text="#{index.title}">Welcome</title>
+	<meta charset="utf-8"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $("#locales").change(function () {
+                var selectedOption = $('#locales').val();
+                if (selectedOption !== ''){
+                    window.location.replace('/?lang=' + selectedOption);
+                }
+            });
+        });
+    </script>
+	
+</head>
+<body>
+	<header>
+		<h1><span th:text="#{index.welcome}">WELCOME</span></h1>
+	    <nav>
+	        <a th:href="@{/viewprojects}" th:text="#{index.viewProjects}">View all projects</a>
+	        <a th:href="@{/myprojects}" th:text="#{index.myProjects}">My projects</a>
+	        <a th:href="@{/newproject}" th:text="#{index.addProject}">Add Project</a>
+	        <a th:href="@{/newpledge}" th:text="#{index.addPledge}">Pledge to a Project</a>
+	        <a th:if="${session.loggedin} != null" th:href="@{/logout}" id="loginbutton"><span th:text="#{index.logout}"></span></a>
+	    	<a th:if="${session.loggedin} == null" th:href="@{/login}"  id="loginbutton"><span th:text="#{index.login}"></span></a>
+	    </nav>
+    </header>
+    
+    <footer>
+		<hr>
+		<span th:text="#{lang.changeLang}"></span>: 
+		<select id="locales">
+			<option value=""></option>
+			<option value="en" th:text="#{lang.EN}"></option>
+			<option value="fr" th:text="#{lang.FR}"></option>
+		</select>
+	</footer>
+	
+</body>
+
+</html>
+

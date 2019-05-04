@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" th:href="@{/css/style.css}"
+	href="/css/styles.css" type="text/css"/>
+	<title th:text="#{viewproject.title}">Welcome</title>
+	<meta charset="utf-8"/>
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $("#locales").change(function () {
+                var selectedOption = $('#locales').val();
+                if (selectedOption !== ''){
+                    window.location.replace('/?lang=' + selectedOption);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+	<header>
+		<h1><span th:text="#{viewproject.title}">WELCOME</span></h1>
+	    <nav>
+	        <a th:href="@{/viewprojects}" th:text="#{index.viewProjects}">View all projects</a>
+	        <a th:href="@{/myprojects}" th:text="#{index.myProjects}">My projects</a>
+	        <a th:href="@{/newproject}" th:text="#{index.addProject}">Add Project</a>
+	        <a th:href="@{/newpledge}" th:text="#{index.addPledge}">Pledge to a Project</a>
+	        <a th:if="${session.loggedin} != null" th:href="@{/logout}" id="loginbutton"><span th:text="#{index.logout}"></span></a>
+	    	<a th:if="${session.loggedin} == null" th:href="@{/login}"  id="loginbutton"><span th:text="#{index.login}"></span></a>
+	    </nav>
+    </header>
+	<main>
+	<p>Name: &#9&#9<span th:text="${project.projectName}"></span></p>
+	<p>Description: &#9&#9<span th:text="${project.description}"></span></p>
+	<p>Target: &#9&#9<span th:text="${project.targetAmount}"></span></p>
+	<p>Date Created: &#9&#9<span th:text="${project.dateCreation}"></span></p>
+	<p>Status: &#9&#9<span th:text="${project.status}"></span></p>
+	
+	<a th:href="@{'/editproject/' + ${project.projectId}}" class="btn" role="button"> Edit Project</a>
+
+	<table>
+		<tr>
+			<th>Pledge ID</th>
+			<th>Amount</th>			
+		</tr>
+		<tr th:each="pledge,iterationCount : ${pledges}" th:class="${iterationCount.odd}? 'odd'" th:object="${pledge}"	>			
+			<td th:text="*{pledgeId}">1</td>
+			<td th:text="*{pledgeAmount}">0</td>
+		</tr>
+	</table>
+	
+	</main>
+	
+	<footer>
+		<hr>
+		<span th:text="#{lang.changeLang}"></span>: 
+		<select id="locales">
+			<option value=""></option>
+			<option value="en" th:text="#{lang.EN}"></option>
+			<option value="fr" th:text="#{lang.FR}"></option>
+		</select>
+	</footer>
+</body>

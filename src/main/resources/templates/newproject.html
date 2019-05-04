@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" />
+	<title>New Project</title>
+	<meta charset="utf-8"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $("#locales").change(function () {
+                var selectedOption = $('#locales').val();
+                if (selectedOption !== ''){
+                    window.location.replace('/?lang=' + selectedOption);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+	<header>
+		<h1><span >New Project</span></h1>
+	    <nav>
+	        <a th:href="@{/viewprojects}" th:text="#{index.viewProjects}">View all projects</a>
+	        <a th:href="@{/myprojects}" th:text="#{index.myProjects}">My projects</a>
+	        <a th:href="@{/newproject}" th:text="#{index.addProject}">Add Project</a>
+	        <a th:href="@{/newpledge}" th:text="#{index.addPledge}">Pledge to a Project</a>
+	        <a th:if="${session.loggedin} != null" th:href="@{/logout}" id="loginbutton"><span th:text="#{index.logout}"></span></a>
+	    	<a th:if="${session.loggedin} == null" th:href="@{/login}"  id="loginbutton"><span th:text="#{index.login}"></span></a>		   
+	    </nav>
+    </header>
+    
+    <main>
+	<form id="newProjectForm" method="post" th:action="@{/newproject}" th:object="${project}">
+		<label for="projectName" th:text="#{newproject.projectName}"></label>
+		<input type="text" th:field="*{projectName}"/>
+		<span th:if="${#fields.hasErrors('projectName')}" th:errors="*{projectName}" >Error</span> 
+		<br>
+		<label for="description" th:text="#{newproject.description}"></label>
+		<input type="text" th:field="*{description}"/>
+		<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" >Error</span> 
+		<br>
+		<label for="targetAmount" th:text="#{newproject.targetAmount}"></label>
+		<input type="text" th:field="*{targetAmount}"/>
+		<span th:if="${#fields.hasErrors('targetAmount')}" th:errors="*{targetAmount}" >Error</span> 
+		<br>
+		<input type="submit" th:value="#{newproject.addProject}"/>
+	</form>
+	
+	<h3 class="error" th:if="${duplicate}" th:text="#{newproject.duplicate}">Error</h3>
+	</main>
+	
+	<footer>
+		<hr>
+		<span th:text="#{lang.changeLang}"></span>: 
+		<select id="locales">
+			<option value=""></option>
+			<option value="en" th:text="#{lang.EN}"></option>
+			<option value="fr" th:text="#{lang.FR}"></option>
+		</select>
+	</footer>
+    
+</body>
+
+</html>

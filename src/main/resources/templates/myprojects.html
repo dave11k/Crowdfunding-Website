@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<link rel="stylesheet" th:href="@{/css/style.css}"
+	href="/css/styles.css" type="text/css"/>
+	<title th:text="#{myprojects.title}">Welcome</title>
+	<meta charset="utf-8"/>
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $("#locales").change(function () {
+                var selectedOption = $('#locales').val();
+                if (selectedOption !== ''){
+                    window.location.replace('/?lang=' + selectedOption);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+	<header>
+		<h1><span th:text="#{myprojects.title}">WELCOME</span></h1>
+	    <nav>
+	        <a th:href="@{/viewprojects}" th:text="#{index.viewProjects}">View all projects</a>
+	        <a th:href="@{/myprojects}" th:text="#{index.myProjects}">My projects</a>
+	        <a th:href="@{/newproject}" th:text="#{index.addProject}">Add Project</a>
+	        <a th:href="@{/newpledge}" th:text="#{index.addPledge}">Pledge to a Project</a>
+	        <a th:if="${session.loggedin} != null" th:href="@{/logout}" id="loginbutton"><span th:text="#{index.logout}"></span></a>
+	    	<a th:if="${session.loggedin} == null" th:href="@{/login}"  id="loginbutton"><span th:text="#{index.login}"></span></a>
+	    </nav>
+    </header>
+	
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>		
+			<th>Status</th>	
+		</tr>
+		<tr th:each="project,iterationCount : ${myprojects}" th:class="${iterationCount.odd}? 'odd'" th:object="${project}"	>			
+			<td th:text="*{projectId}">1</td>
+			<td><a th:href="'/viewproject/'+*{projectId}" th:text="*{projectName}">Project</a></td>
+			<td th:text="*{status}">Open</td>
+		</tr>
+	</table>
+	<p>
+		<span th:text="#{myprojects.tip}"></span>
+	</p>
+	
+	<footer>
+		<hr>
+		<span th:text="#{lang.changeLang}"></span>: 
+		<select id="locales">
+			<option value=""></option>
+			<option value="en" th:text="#{lang.EN}"></option>
+			<option value="fr" th:text="#{lang.FR}"></option>
+		</select>
+	</footer>
+</body>
